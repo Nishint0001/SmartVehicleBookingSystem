@@ -35,17 +35,14 @@ public class RiderServiceImpl implements RiderService
 
         rideRequestEntity.setRideRequestStatusEnum(RideRequestStatusEnum.PENDING);
 
-        Double fare=rideFareCalculationStrategy.calculateFare(rideRequestDto);
+        Double fare=rideFareCalculationStrategy.calculateFare(rideRequestEntity);
         rideRequestEntity.setFare(fare);
+
+        RideRequestEntity savedEntity= rideRequestRepository.save(rideRequestEntity);
 
         driverMatchingStrategy.findMatchingDriver(rideRequestEntity);
 
-       RideRequestEntity savedEntity= rideRequestRepository.save(rideRequestEntity);
-
-        log.info(rideRequestEntity.toString());
-
         return modelMapper.map(savedEntity, RideRequestDto.class);
-
     }
 
     @Override
